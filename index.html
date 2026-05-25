@@ -5,34 +5,50 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>VIOLETA VOICE RGB</title>
+<title>VIOLETA RGB</title>
 
 <style>
 
 body{
     font-family: Arial;
     text-align: center;
-    margin-top: 60px;
     background-color: #111;
     color: white;
+    margin-top: 40px;
 }
 
 button{
-    width: 240px;
-    height: 80px;
-    font-size: 28px;
+    width: 220px;
+    height: 70px;
+    font-size: 24px;
+    margin: 10px;
     border: none;
     border-radius: 15px;
-    background-color: #7c3aed;
     color: white;
 }
 
-h1{
-    font-size: 42px;
+.red{
+    background-color: red;
+}
+
+.green{
+    background-color: green;
+}
+
+.blue{
+    background-color: blue;
+}
+
+.off{
+    background-color: gray;
+}
+
+.voice{
+    background-color: purple;
 }
 
 #status{
-    margin-top: 40px;
+    margin-top: 30px;
     font-size: 28px;
 }
 
@@ -44,7 +60,36 @@ h1{
 
 <h1>VIOLETA RGB</h1>
 
-<button onclick="startRecognition()">
+<button class="red"
+onclick="sendColor('red')">
+RED
+</button>
+
+<br>
+
+<button class="green"
+onclick="sendColor('green')">
+GREEN
+</button>
+
+<br>
+
+<button class="blue"
+onclick="sendColor('blue')">
+BLUE
+</button>
+
+<br>
+
+<button class="off"
+onclick="sendColor('off')">
+OFF
+</button>
+
+<br><br>
+
+<button class="voice"
+onclick="startRecognition()">
 🎤 HABLAR
 </button>
 
@@ -56,8 +101,18 @@ Esperando comando...
 
 function sendColor(color)
 {
-    window.location.href =
+    let url =
         "http://10.184.34.178/" + color;
+
+    document.getElementById("status").innerHTML =
+        "Enviando: " + color;
+
+    fetch(url, {
+        mode: "no-cors"
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 }
 
 function startRecognition()
@@ -98,34 +153,22 @@ function startRecognition()
         document.getElementById("status").innerHTML =
             "Escuché: " + text;
 
-        if(
-            text.includes("rojo") ||
-            text.includes("red")
-        )
+        if(text.includes("rojo"))
         {
             sendColor("red");
         }
 
-        else if(
-            text.includes("verde") ||
-            text.includes("green")
-        )
+        else if(text.includes("verde"))
         {
             sendColor("green");
         }
 
-        else if(
-            text.includes("azul") ||
-            text.includes("blue")
-        )
+        else if(text.includes("azul"))
         {
             sendColor("blue");
         }
 
-        else if(
-            text.includes("apagar") ||
-            text.includes("off")
-        )
+        else if(text.includes("apagar"))
         {
             sendColor("off");
         }
