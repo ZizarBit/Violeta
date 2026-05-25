@@ -3,7 +3,8 @@
 
 <head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
 
 <title>VIOLETA RGB</title>
 
@@ -11,45 +12,24 @@
 
 body{
     font-family: Arial;
-    text-align: center;
-    background-color: #111;
-    color: white;
-    margin-top: 40px;
+    text-align:center;
+    background:#111;
+    color:white;
+    margin-top:40px;
 }
 
 button{
-    width: 220px;
-    height: 70px;
-    font-size: 24px;
-    margin: 10px;
-    border: none;
-    border-radius: 15px;
-    color: white;
-}
-
-.red{
-    background-color: red;
-}
-
-.green{
-    background-color: green;
-}
-
-.blue{
-    background-color: blue;
-}
-
-.off{
-    background-color: gray;
-}
-
-.voice{
-    background-color: purple;
+    width:240px;
+    height:70px;
+    font-size:24px;
+    margin:10px;
+    border:none;
+    border-radius:15px;
 }
 
 #status{
-    margin-top: 30px;
-    font-size: 28px;
+    margin-top:30px;
+    font-size:28px;
 }
 
 </style>
@@ -60,36 +40,7 @@ button{
 
 <h1>VIOLETA RGB</h1>
 
-<button class="red"
-onclick="sendColor('red')">
-RED
-</button>
-
-<br>
-
-<button class="green"
-onclick="sendColor('green')">
-GREEN
-</button>
-
-<br>
-
-<button class="blue"
-onclick="sendColor('blue')">
-BLUE
-</button>
-
-<br>
-
-<button class="off"
-onclick="sendColor('off')">
-OFF
-</button>
-
-<br><br>
-
-<button class="voice"
-onclick="startRecognition()">
+<button onclick="startRecognition()">
 🎤 HABLAR
 </button>
 
@@ -99,20 +50,19 @@ Esperando comando...
 
 <script>
 
+const ESP_IP =
+"http://10.184.34.178";
+
 function sendColor(color)
 {
-    let url =
-        "http://10.184.34.178/" + color;
+    fetch(
+        ESP_IP + "/" + color,
+        {mode:"no-cors"}
+    );
 
-    document.getElementById("status").innerHTML =
-        "Enviando: " + color;
-
-    fetch(url, {
-        mode: "no-cors"
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    document.getElementById("status")
+    .innerHTML =
+    "Comando: " + color;
 }
 
 function startRecognition()
@@ -121,67 +71,118 @@ function startRecognition()
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
-    if(!SpeechRecognition)
-    {
-        document.getElementById("status").innerHTML =
-            "SpeechRecognition no soportado";
-
-        return;
-    }
-
     const recognition =
         new SpeechRecognition();
 
     recognition.lang = "es-MX";
 
-    recognition.continuous = false;
-
-    recognition.interimResults = false;
-
-    recognition.maxAlternatives = 1;
-
-    document.getElementById("status").innerHTML =
-        "Escuchando...";
-
     recognition.start();
+
+    document.getElementById("status")
+    .innerHTML =
+    "Escuchando...";
 
     recognition.onresult = function(event)
     {
         let text =
-            event.results[0][0].transcript.toLowerCase();
+            event.results[0][0]
+            .transcript
+            .toLowerCase();
 
-        document.getElementById("status").innerHTML =
-            "Escuché: " + text;
+        document.getElementById("status")
+        .innerHTML =
+        "Escuché: " + text;
 
-        if(text.includes("rojo"))
+        if(text.includes("rojo") ||
+           text.includes("red"))
         {
             sendColor("red");
         }
 
-        else if(text.includes("verde"))
+        else if(text.includes("verde") ||
+                text.includes("green"))
         {
             sendColor("green");
         }
 
-        else if(text.includes("azul"))
+        else if(text.includes("azul") ||
+                text.includes("blue"))
         {
             sendColor("blue");
         }
 
-        else if(text.includes("apagar"))
+        else if(text.includes("amarillo") ||
+                text.includes("yellow"))
+        {
+            sendColor("yellow");
+        }
+
+        else if(text.includes("morado") ||
+                text.includes("purple"))
+        {
+            sendColor("purple");
+        }
+
+        else if(text.includes("rosa") ||
+                text.includes("pink"))
+        {
+            sendColor("pink");
+        }
+
+        else if(text.includes("naranja") ||
+                text.includes("orange"))
+        {
+            sendColor("orange");
+        }
+
+        else if(text.includes("blanco") ||
+                text.includes("white"))
+        {
+            sendColor("white");
+        }
+
+        else if(text.includes("cyan"))
+        {
+            sendColor("cyan");
+        }
+
+        else if(text.includes("lima") ||
+                text.includes("lime"))
+        {
+            sendColor("lime");
+        }
+
+        else if(text.includes("apagar") ||
+                text.includes("off"))
         {
             sendColor("off");
         }
-    };
 
-    recognition.onerror = function(event)
-    {
-        document.getElementById("status").innerHTML =
-            "Error: " + event.error;
+        else if(text.includes("prender") ||
+                text.includes("on"))
+        {
+            sendColor("on");
+        }
+
+        else if(text.includes("arcoiris"))
+        {
+            sendColor("rainbow");
+        }
+
+        else if(text.includes("fiesta"))
+        {
+            sendColor("party");
+        }
+
+        else if(text.includes("policia"))
+        {
+            sendColor("police");
+        }
     };
 }
 
 </script>
 
 </body>
+
 </html>
