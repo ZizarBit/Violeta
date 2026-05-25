@@ -2,50 +2,62 @@
 <html>
 
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>VIOLET RGB</title>
+<title>VIOLETA VOICE RGB</title>
 
 <style>
 
 body{
-    font-family:sans-serif;
-    text-align:center;
-    margin-top:40px;
+    font-family: Arial;
+    text-align: center;
+    margin-top: 60px;
+    background-color: #111;
+    color: white;
 }
 
 button{
-    width:220px;
-    height:70px;
-    font-size:24px;
-    margin:10px;
+    width: 240px;
+    height: 80px;
+    font-size: 28px;
+    border: none;
+    border-radius: 15px;
+    background-color: #7c3aed;
+    color: white;
+}
+
+h1{
+    font-size: 42px;
+}
+
+#status{
+    margin-top: 40px;
+    font-size: 28px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<h1>VIOLET RGB</h1>
+<h1>VIOLETA RGB</h1>
 
 <button onclick="startRecognition()">
 🎤 HABLAR
 </button>
 
-<h2 id="status"></h2>
+<div id="status">
+Esperando comando...
+</div>
 
 <script>
 
 function sendColor(color)
 {
     window.location.href =
-    "http://10.184.34.178/" + color;
-    .then(() => {
-        console.log("Enviado:", color);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+        "http://10.184.34.178/" + color;
 }
 
 function startRecognition()
@@ -53,6 +65,14 @@ function startRecognition()
     const SpeechRecognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
+
+    if(!SpeechRecognition)
+    {
+        document.getElementById("status").innerHTML =
+            "SpeechRecognition no soportado";
+
+        return;
+    }
 
     const recognition =
         new SpeechRecognition();
@@ -78,22 +98,34 @@ function startRecognition()
         document.getElementById("status").innerHTML =
             "Escuché: " + text;
 
-        if(text.includes("rojo"))
+        if(
+            text.includes("rojo") ||
+            text.includes("red")
+        )
         {
             sendColor("red");
         }
 
-        else if(text.includes("verde"))
+        else if(
+            text.includes("verde") ||
+            text.includes("green")
+        )
         {
             sendColor("green");
         }
 
-        else if(text.includes("azul"))
+        else if(
+            text.includes("azul") ||
+            text.includes("blue")
+        )
         {
             sendColor("blue");
         }
 
-        else if(text.includes("apagar"))
+        else if(
+            text.includes("apagar") ||
+            text.includes("off")
+        )
         {
             sendColor("off");
         }
