@@ -38,7 +38,8 @@ button{
 
 function sendColor(color)
 {
-    fetch("http://10.184.34.178/" + color)
+    window.location.href =
+    "http://10.184.34.178/" + color;
     .then(() => {
         console.log("Enviado:", color);
     })
